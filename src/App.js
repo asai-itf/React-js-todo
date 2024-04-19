@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import { AddForm } from './components/AddForm';
 import { EditForm } from './components/EditForm';
@@ -62,12 +62,16 @@ function App() {
   const handleEditSubmit = (e) => {
     e.preventDefault()
 
-    setTodo({
+    const updateTodo = {
       ...todo,
       title: title,
       status: status,
       detail: detail
-    })
+    }
+
+    const newTodos = todos.filter((item) => item.id !== todo.id)
+
+    setTodos([...newTodos, updateTodo])
 
     setTitle('')
     setStatus('未着手')
@@ -75,12 +79,12 @@ function App() {
     setIsEditing(false)
   }
 
-  // ↑ handleEditSubmit内に記述するとstateが反映されなかったためuseEffectで対応
-  useEffect(() => {
-    const newTodos = todos.filter((item) => item.id !== todo.id)
-    // 最初todoがない状態の時に実行しないようにif文
-    if(id !== 1) setTodos([...newTodos, todo])
-  }, [todo])
+  // // ↑ handleEditSubmit内に記述するとstateが反映されなかったためuseEffectで対応
+  // useEffect(() => {
+  //   const newTodos = todos.filter((item) => item.id !== todo.id)
+  //   // 最初todoがない状態の時に実行しないようにif文
+  //   if(id !== 1) setTodos([...newTodos, todo])
+  // }, [todo])
 
   return (
     <>
